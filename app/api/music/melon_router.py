@@ -1,9 +1,4 @@
-from fastapi.security import OAuth2PasswordBearer
-from fastapi import Depends, APIRouter, Body, Response
-from sqlalchemy.ext.asyncio import AsyncSession
-from starlette.responses import JSONResponse
-from typing import Annotated
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter
 
 from app.domain.music.controllers.melon_controller import MelonController
 import logging

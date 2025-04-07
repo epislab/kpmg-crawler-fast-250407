@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 
-from app.api.music.melon_router import router as music_router
+from app.api.music.melon_router import router as melon_router
 
 
 router = APIRouter()
 
-router.include_router(music_router)
+router.include_router(melon_router)
