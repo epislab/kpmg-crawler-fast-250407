@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from sqlalchemy import desc
+from sqlalchemy import desc, delete
 
 from app.domain.music.models.song import Song
 from app.foundation.infrastructure.database.database import database
@@ -19,7 +19,7 @@ class MelonRepository:
             async with self._db.session as session:
                 async with session.begin():
                     # 기존 데이터 삭제
-                    await session.execute(select(Song).delete())
+                    await session.execute(delete(Song))
                     
                     # 새로운 데이터 삽입
                     for song in songs:
