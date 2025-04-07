@@ -29,3 +29,7 @@ pip install python-jose[cryptography]
 docker compose down
 docker compose build --no-cache
 docker compose up
+
+
+
+docker exec -it crawler-crawler-api-1 bash -c "PGPASSWORD=YLkbHpjtkasEeLizyLxNUvtdPSlkpNaa psql -h crossover.proxy.rlwy.net -U postgres -p 27041 -d railway"

@@ -4,11 +4,11 @@ from bs4 import BeautifulSoup
 import aiohttp
 
 from app.domain.music.models.song import Song
-from app.domain.music.repositories.melon_repository import InMemorySongRepository
+from app.domain.music.repositories.melon_repository import MelonRepository
 
 class MelonService:
     def __init__(self):
-        self.repository = InMemorySongRepository()
+        self.repository = MelonRepository()
         self.url = "https://smu.melon.com/chart/index.htm#"
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -39,19 +39,19 @@ class MelonService:
                 song = Song(rank=rank, title=title, artist=artist)
                 songs.append(song)
             
-            # 크롤링한 데이터를 저장
-            self.repository.save_songs(songs, datetime.now())
+            # 크롤링한 데이터를 PostgreSQL 데이터베이스에 저장
+            await self.repository.save_songs(songs)
             
             return songs
             
         except Exception as e:
             raise Exception(f"크롤링 중 오류가 발생했습니다: {str(e)}")
     
-    def get_latest_songs(self) -> List[Dict]:
+    async def get_latest_songs(self) -> List[Song]:
         """가장 최근에 크롤링한 노래 목록을 반환합니다."""
-        return self.repository.get_latest_songs()
+        return await self.repository.get_latest_songs()
     
-    def get_songs_by_date(self, date: datetime) -> List[Dict]:
+    async def get_songs_by_date(self, date: datetime) -> List[Song]:
         """특정 날짜의 노래 목록을 반환합니다."""
-        return self.repository.get_songs_by_date(date) 
+        return await self.repository.get_songs_by_date(date)
 
