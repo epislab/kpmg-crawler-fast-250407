@@ -1,4 +1,5 @@
 from typing import Optional
+import os
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, AsyncEngine
 from sqlalchemy.orm import sessionmaker
 
@@ -14,8 +15,12 @@ class Database:
 
     def __init__(self):
         if not self._engine:
+            DATABASE_URL = os.getenv(
+                'DATABASE_URL',
+                "postgresql+asyncpg://postgres:YLkbHpjtkasEeLizyLxNUvtdPSlkpNaa@crossover.proxy.rlwy.net:27041/railway"
+            )
             self._engine = create_async_engine(
-                "postgresql+asyncpg://postgres:YLkbHpjtkasEeLizyLxNUvtdPSlkpNaa@crossover.proxy.rlwy.net:27041/railway",
+                DATABASE_URL,
                 echo=True,
                 pool_pre_ping=True,
                 pool_size=5,
